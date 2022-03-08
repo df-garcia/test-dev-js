@@ -44,7 +44,7 @@ const IncrementCounter = () => {
 }
 
 const DecrementCounter = () => {
-  const [counter, setCounter] = useState(0)
+  const [counter, setCounter] = useState(1)
   
   decrement = () => {
     setCounter((prev) => prev - 1)
@@ -72,7 +72,7 @@ const oneRender = () => renderComponents(
 
 const render1 = oneRender()
 
-assertArray([0, 0], render1)
+assertArray([0, 1], render1)
 
 increment()
 increment()
@@ -80,14 +80,14 @@ decrement()
 
 const render2 = oneRender()
 
-assertArray([2, -1], render2)
+assertArray([2, 0], render2)
 
 increment()
 decrement()
 
 const render3 = oneRender()
 
-assertArray([3, -2], render3)
+assertArray([3, -1], render3)
 
 increment()
 increment()
@@ -96,4 +96,4 @@ decrement()
 
 const render4 = oneRender()
 
-assertArray([6, -3], render4)
+assertArray([6, -2], render4)
