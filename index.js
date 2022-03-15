@@ -1,99 +1,101 @@
-
 // MAKE THIS SCRIPT RUN WITHOUT ERRORS MODIFYING ONLY BETWEEN THIS COMMENT TAG: [MODIFICATION ALLOWED]
 
-let stackPointer = 0
-const stateStack = []
+let stackPointer = 0;
+const stateStack = [];
 
 const renderComponent = (Component) => {
-  const result = Component()
-  stackPointer += 1
-  return result
-}
+  const result = Component();
+  stackPointer += 1;
+  return result;
+};
 
 const renderComponents = (...components) => {
-  const renderedComponents = components.map(renderComponent)
-  stackPointer = 0
-  return renderedComponents
-}
+  const renderedComponents = components.map(renderComponent);
+  stackPointer = 0;
+  return renderedComponents;
+};
 
 const useState = (initialState) => {
   // [MODIFICATION ALLOWED]
+  const setterStackPointer = stackPointer;
+
   const setter = (toSetValue) => {
-    if (typeof toSetValue === 'function') {
-      stateStack[stackPointer] = toSetValue(stateStack[stackPointer] || initialState)
+    if (typeof toSetValue === "function") {
+      stateStack[setterStackPointer] = toSetValue(
+        stateStack[setterStackPointer] ?? initialState
+      );
     } else {
-      stateStack[stackPointer] = toSetValue
+      stateStack[setterStackPointer] = toSetValue;
     }
-  }
+  };
 
-  return [stateStack[stackPointer] || initialState, setter]
+  return [stateStack[setterStackPointer] ?? initialState, setter];
   // [MODIFICATION ALLOWED]
-}
+};
 
-let increment
-let decrement
+let increment;
+let decrement;
 
 const IncrementCounter = () => {
-  const [counter, setCounter] = useState(0)
-  
-  increment = () => {
-    setCounter((prev) => prev + 1)
-  }
+  const [counter, setCounter] = useState(0);
 
-  return counter
-}
+  increment = () => {
+    setCounter((prev) => prev + 1);
+  };
+
+  return counter;
+};
 
 const DecrementCounter = () => {
-  const [counter, setCounter] = useState(1)
-  
-  decrement = () => {
-    setCounter((prev) => prev - 1)
-  }
+  const [counter, setCounter] = useState(1);
 
-  return counter
-}
+  decrement = () => {
+    setCounter((prev) => prev - 1);
+  };
+
+  return counter;
+};
 
 const assertArray = (original, asserted) => {
   if (original.length !== asserted.length) {
-    throw new Error(`Arrays have different lengths: ${original} : ${asserted}`)
+    throw new Error(`Arrays have different lengths: ${original} : ${asserted}`);
   }
   original.forEach((originalItem, index) => {
-    const assertedItem = asserted[index]
+    const assertedItem = asserted[index];
     if (originalItem !== assertedItem) {
-      throw new Error(`Element at index [${index}] is not equal, expecting: [${originalItem}] found: [${assertedItem}]`)
+      throw new Error(
+        `Element at index [${index}] is not equal, expecting: [${originalItem}] found: [${assertedItem}]`
+      );
     }
-  })
-}
+  });
+};
 
-const oneRender = () => renderComponents(
-  IncrementCounter,
-  DecrementCounter,
-)
+const oneRender = () => renderComponents(IncrementCounter, DecrementCounter);
 
-const render1 = oneRender()
+const render1 = oneRender();
 
-assertArray([0, 1], render1)
+assertArray([0, 1], render1);
 
-increment()
-increment()
-decrement()
+increment();
+increment();
+decrement();
 
-const render2 = oneRender()
+const render2 = oneRender();
 
-assertArray([2, 0], render2)
+assertArray([2, 0], render2);
 
-increment()
-decrement()
+increment();
+decrement();
 
-const render3 = oneRender()
+const render3 = oneRender();
 
-assertArray([3, -1], render3)
+assertArray([3, -1], render3);
 
-increment()
-increment()
-increment()
-decrement()
+increment();
+increment();
+increment();
+decrement();
 
-const render4 = oneRender()
+const render4 = oneRender();
 
-assertArray([6, -2], render4)
+assertArray([6, -2], render4);
